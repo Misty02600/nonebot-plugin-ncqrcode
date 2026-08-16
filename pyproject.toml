@@ -1,6 +1,6 @@
 [project]
 name = "nonebot-plugin-ncqrcode"
-version = "0.1.0"
+version = "0.2.0"
 description = "监控 NapCat 登录状态并推送登录二维码"
 readme = "README.md"
 license = "MIT"
