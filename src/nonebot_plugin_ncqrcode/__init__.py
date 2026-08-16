@@ -11,7 +11,7 @@ from .config import Config
 
 __plugin_meta__ = PluginMetadata(
     name="Napcat QRCode",
-    description="监控 NapCat 登录状态，并通过独立跨平台通道推送离线通知与二维码。",
+    description="监控 NapCat 登录状态，并推送离线通知与二维码",
     usage="/nc subscribe | unsubscribe | qrcode",
     type="application",
     homepage="https://github.com/Misty02600/nonebot-plugin-ncqrcode",
