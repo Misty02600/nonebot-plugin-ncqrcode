@@ -1,24 +1,26 @@
-# from nonebot import logger, require
-from nonebot.plugin import PluginMetadata  # , inherit_supported_adapters
+from __future__ import annotations
 
-# require("nonebot_plugin_uninfo")
-# require("nonebot_plugin_alconna")
-# require("nonebot_plugin_localstore")
-# require("nonebot_plugin_apscheduler")
+from nonebot import require
+from nonebot.plugin import PluginMetadata, inherit_supported_adapters
+
+require("nonebot_plugin_alconna")
+require("nonebot_plugin_uninfo")
+require("nonebot_plugin_localstore")
+
 from .config import Config
 
-__all__ = ["__plugin_meta__", "handlers"]
-
 __plugin_meta__ = PluginMetadata(
-    name="名称",
-    description="描述",
-    usage="模板测试 [文本]",
-    type="application",  # application: 功能性插件 | library: 库插件
+    name="Napcat QRCode",
+    description="监控 NapCat 登录状态，并通过独立跨平台通道推送离线通知与二维码。",
+    usage="/nc subscribe | unsubscribe | qrcode",
+    type="application",
     homepage="https://github.com/Misty02600/nonebot-plugin-ncqrcode",
     config=Config,
-    # supported_adapters=inherit_supported_adapters("nonebot_plugin_alconna"),
-    supported_adapters={"~onebot.v11"},
-    extra={"author": "Misty02600"},
+    supported_adapters=inherit_supported_adapters(
+        "nonebot_plugin_alconna",
+        "nonebot_plugin_uninfo",
+    ),
+    extra={"author": "Misty02600 <xiao02600@gmail.com>"},
 )
 
-from . import handlers
+from . import handlers as _handlers  # noqa: F401

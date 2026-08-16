@@ -225,9 +225,3 @@ config/
 
 .DS_Store
 junit.xml
-
-# AI
-instructions/
-AGENT.md
-.agent/rules/
-memory-bank/

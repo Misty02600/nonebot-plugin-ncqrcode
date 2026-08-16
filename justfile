@@ -27,8 +27,6 @@ test:
     {{ assert(uv != "") }}uv run pytest
 
 # 在 main 上创建版本提交和 annotated tag，并整体原子推送到 origin
-[confirm("确认在 main 上创建版本提交和 annotated tag，并整体原子推送到 origin？")]
-[group("release")]
 bump:
     {{ assert(uv != "") }}{{ assert(git != "") }}{{ if shell("git branch --show-current") == "main" { "" } else { error("bump 只能在 main 分支执行") } }}uv run cz bump --yes
     uv lock
