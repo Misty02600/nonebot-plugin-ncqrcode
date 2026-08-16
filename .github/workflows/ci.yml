@@ -1,0 +1,93 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "LICENSE"
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  ruff:
+    name: Ruff
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v9.0.0
+        with:
+          enable-cache: true
+          python-version: "3.11"
+          version: "0.11.29"
+
+      - name: Install dependencies
+        run: uv sync --only-group lint
+
+      - name: Ruff check
+        run: uv run --no-sync ruff check --output-format=github .
+
+      - name: Ruff format check
+        run: uv run --no-sync ruff format --check .
+
+  basedpyright:
+    name: BasedPyright
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v9.0.0
+        with:
+          enable-cache: true
+          python-version: "3.11"
+          version: "0.11.29"
+
+      - name: Install dependencies
+        run: uv sync --no-dev --group type
+
+      - name: Static typing check
+        run: uv run --no-sync basedpyright
+
+  test:
+    name: Test (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13", "3.14"]
+
+    env:
+      UV_NO_SYNC: 1
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v9.0.0
+        with:
+          enable-cache: true
+          python-version: ${{ matrix.python-version }}
+          version: "0.11.29"
+
+      - name: Install dependencies
+        run: uv sync --no-dev --group test
+
+      - name: Run pytest
+        run: uv run --no-sync pytest
