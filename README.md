@@ -49,7 +49,3 @@ NCQRCODE_MAX_QR_NOTIFICATIONS=5
 | `/nc subscribe`   | 将当前场景设为通知目标         |
 | `/nc unsubscribe` | 清除通知目标                   |
 | `/nc qrcode`      | 获取登录二维码，仅回复当前会话 |
-
-## 效果图
-
-![alt text](assets/napcat-qrcode.png)
